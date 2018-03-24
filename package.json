@@ -1,0 +1,23 @@
+{
+  "name": "wof-server",
+  "version": "1.0.0",
+  "description": "Simple whosonfirst file server",
+  "bin": "./bin/cli.js",
+  "dependencies": {
+    "hapi": "^13.5.3",
+    "inert": "^4.2.1",
+    "mkdirp": "^0.5.1",
+    "rc": "^1.2.6",
+    "vision": "^4.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ryanramage/wof-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ryanramage/wof-server/issues"
+  },
+  "homepage": "https://github.com/ryanramage/wof-server"
+}
