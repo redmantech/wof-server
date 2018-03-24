@@ -20,7 +20,26 @@ var server = new Hapi.Server()
 server.connection({ port: config.port })
 server.register([Inert, Vision])
 
-// Add the route
+server.route({
+  method:'GET',
+  path:'/data/{first}/{second}/{third}/{fourth}/{id}.geojson',
+  handler: (req, reply) => {
+    let f = `${config.dir}/data/${req.params.first}/${req.params.second}/${req.params.third}/${req.params.fourth}/${req.params.id}.geojson`
+    reply.file(f, {confine: false}).type('application/json')
+  },
+  config: {
+    validate: {
+      params: {
+        first: Joi.number().required(),
+        second: Joi.number().required(),
+        third: Joi.number().required(),
+        fourth: Joi.number().required(),
+        id: Joi.number().required()
+      }
+    }
+  }
+})
+
 server.route({
   method:'GET',
   path:'/data/{first}/{second}/{third}/{id}.geojson',
@@ -39,6 +58,7 @@ server.route({
     }
   }
 })
+
 
 server.route({
   method:'PUT',
