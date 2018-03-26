@@ -1,6 +1,6 @@
 {
   "name": "wof-server",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple whosonfirst file server",
   "bin": "./bin/cli.js",
   "dependencies": {

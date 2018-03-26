@@ -30,11 +30,11 @@ server.route({
   config: {
     validate: {
       params: {
-        first: Joi.number().required(),
-        second: Joi.number().required(),
-        third: Joi.number().required(),
-        fourth: Joi.number().required(),
-        id: Joi.number().required()
+        first: Joi.string().alphanum().required(),
+        second: Joi.string().alphanum().required(),
+        third: Joi.string().alphanum().required(),
+        fourth: Joi.string().alphanum().required(),
+        id: Joi.string().alphanum().required()
       }
     }
   }
@@ -50,10 +50,10 @@ server.route({
   config: {
     validate: {
       params: {
-        first: Joi.number().required(),
-        second: Joi.number().required(),
-        third: Joi.number().required(),
-        id: Joi.number().required()
+        first: Joi.string().alphanum().required(),
+        second: Joi.string().alphanum().required(),
+        third: Joi.string().alphanum().required(),
+        id: Joi.string().alphanum().required()
       }
     }
   }
@@ -77,10 +77,10 @@ server.route({
   config: {
     validate: {
       params: {
-        first: Joi.number().required(),
-        second: Joi.number().required(),
-        third: Joi.number().required(),
-        id: Joi.number().required()
+        first: Joi.string().alphanum().required(),
+        second: Joi.string().alphanum().required(),
+        third: Joi.string().alphanum().required(),
+        id: Joi.string().alphanum().required()
       },
       payload: Joi.object().required()
     }
