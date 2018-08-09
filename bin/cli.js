@@ -7,6 +7,8 @@ const path = require('path')
 const Inert = require('inert')
 const Vision = require('vision')
 const mkdirp = require('mkdirp')
+const concat = require('concat-stream')
+const simplify = require('simplify-geojson')
 const config = require('rc')('wofserver', require('../options'))
 console.log(config)
 
@@ -25,7 +27,7 @@ server.route({
   path:'/data/{first}/{second}/{third}/{fourth}/{id}.geojson',
   handler: (req, reply) => {
     let f = `${config.dir}/data/${req.params.first}/${req.params.second}/${req.params.third}/${req.params.fourth}/${req.params.id}.geojson`
-    reply.file(f, {confine: false}).type('application/json')
+    serveFile(config, req, reply, f)
   },
   config: {
     validate: {
@@ -45,7 +47,7 @@ server.route({
   path:'/data/{first}/{second}/{third}/{id}.geojson',
   handler: (req, reply) => {
     let f = `${config.dir}/data/${req.params.first}/${req.params.second}/${req.params.third}/${req.params.id}.geojson`
-    reply.file(f, {confine: false}).type('application/json')
+    serveFile(config, req, reply, f)
   },
   config: {
     validate: {
@@ -86,6 +88,31 @@ server.route({
     }
   }
 })
+
+function serveFile (config, req, reply, f) {
+  // check file size. if
+  fs.stat(f, (err, details) => {
+    if (err) {
+      console.log(err)
+      return reply(Boom.badRequest('invalid'))
+    }
+    if (details.size < config.simplifySize) return reply.file(f, {confine: false}).type('application/json')
+    console.log('simplify ', f)
+    fs.createReadStream(f).pipe(concat(function (buffer) {
+      try {
+        var geojson = JSON.parse(buffer)
+      } catch (e) {
+        console.log(e)
+        return reply(Boom.badRequest('invalid json'))
+      }
+      var result = simplify(geojson, config.tolerance)
+      if (result instanceof Error) reply(Boom.badRequest('could not simplify json'))
+      reply(result).type('application/json')
+    }))
+
+  })
+}
+
 
 
 server.start(function (err) {
